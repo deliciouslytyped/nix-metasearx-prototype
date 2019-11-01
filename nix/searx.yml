@@ -1,0 +1,269 @@
+general:
+    debug : True # Debug mode, only for development
+    instance_name : "searx" # displayed name
+
+search:
+    safe_search : 0 # Filter results. 0: None, 1: Moderate, 2: Strict
+    autocomplete : "" # Existing autocomplete backends: "dbpedia", "duckduckgo", "google", "startpage", "wikipedia" - leave blank to turn it off by default
+    language : "en-US"
+    ban_time_on_fail : 5 # ban time in seconds after engine errors
+    max_ban_time_on_fail : 120 # max ban time in seconds after engine errors
+
+server:
+    port : 8888
+    bind_address : "0.0.0.0" # address to listen on
+    secret_key : "ultrasecretkey" # change this!
+    base_url : False # Set custom base_url. Possible values: False or "https://your.custom.host/location/"
+    image_proxy : False # Proxying image results through searx
+    http_protocol_version : "1.0"  # 1.0 and 1.1 are supported
+
+ui:
+    static_path : "" # Custom static path - leave it blank if you didn't change
+    templates_path : "" # Custom templates path - leave it blank if you didn't change
+    default_theme : oscar # ui theme
+    default_locale : "" # Default interface locale - leave blank to detect from browser information or use codes from the 'locales' config section
+    theme_args :
+        oscar_style : logicodev # default style of oscar
+
+# searx supports result proxification using an external service: https://github.com/asciimoo/morty
+# uncomment below section if you have running morty proxy
+# the key is base64 encoded (keep the !!binary notation)
+# Note: since commit af77ec3, morty accepts a base64 encoded key.
+#result_proxy:
+#    url : http://127.0.0.1:3000/
+#    key : !!binary "your_morty_proxy_key"
+
+outgoing: # communication with search engines
+    request_timeout : 2.0 # default timeout in seconds, can be override by engine
+    # max_request_timeout: 10.0 # the maximum timeout in seconds
+    useragent_suffix : "" # suffix of searx_useragent, could contain informations like an email address to the administrator
+    pool_connections : 100 # Number of different hosts
+    pool_maxsize : 10 # Number of simultaneous requests by host
+# uncomment below section if you want to use a proxy
+# see http://docs.python-requests.org/en/latest/user/advanced/#proxies
+# SOCKS proxies are also supported: see http://docs.python-requests.org/en/master/user/advanced/#socks
+#    proxies :
+#        http : http://127.0.0.1:8080
+#        https: http://127.0.0.1:8080
+# uncomment below section only if you have more than one network interface
+# which can be the source of outgoing search requests
+#    source_ips:
+#        - 1.1.1.1
+#        - 1.1.1.2
+
+engines:
+  - name : arch linux wiki
+    engine : archlinux
+    shortcut : al
+
+  - name : wikipedia
+    engine : wikipedia
+    shortcut : wp
+    base_url : 'https://{language}.wikipedia.org/'
+
+  - name : nixos-wiki-title
+    engine : nixoswiki
+    shortcut : nosti
+    base_url : 'https://nixos.wiki/'
+    search_type : text
+    timeout : 10
+
+  - name : nixos-wiki-text
+    engine : nixoswiki
+    shortcut : noste
+    base_url : 'https://nixos.wiki/'
+    search_type : title
+    timeout : 10
+
+  - name : nixos-hound-nixpkgs
+    engine : nixhound
+    shortcut : nosnip
+    repo: NixOS-nixpkgs
+    base_url : 'https://search.nix.gsc.io/'
+    timeout : 10
+
+  - name : nixos-hound-nix
+    engine : nixhound
+    shortcut : nosni
+    base_url : 'https://search.nix.gsc.io/'
+    timeout : 10
+
+  - name : nixos-logger-nixos
+    engine : nixlogger
+    shortcut : noslo
+    channel : nixos
+    base_url : 'https://logs.nix.samueldr.com/'
+    timeout : 10
+
+  - name : nixos-logger-nixos-dev
+    engine : nixlogger
+    shortcut : noslodev
+    channel : nixos-dev
+    base_url : 'https://logs.nix.samueldr.com/'
+    timeout : 10
+
+  - name : nixos-logger-nixos-officehours
+    engine : nixlogger
+    shortcut : noslooffc
+    channel : nixos-officehours
+    base_url : 'https://logs.nix.samueldr.com/'
+    timeout : 10
+
+  - name : nixos-logger-home-manager
+    engine : nixlogger
+    shortcut : nosloho
+    channel : home-manager
+    base_url : 'https://logs.nix.samueldr.com/'
+    timeout : 10
+
+  - name : nixos-logger-nixos-security
+    engine : nixlogger
+    shortcut : noslosec
+    channel : nixos-security
+    base_url : 'https://logs.nix.samueldr.com/'
+    timeout : 10
+
+  - name : nixos-logger-nix-lang
+    engine : nixlogger
+    shortcut : noslolang
+    channel : nix-lang
+    base_url : 'https://logs.nix.samueldr.com/'
+    timeout : 10
+
+  - name : nixos-gh-issues-nixpkgs
+    engine : nixosgh
+    shortcut : nghpkgi
+    repo : nixpkgs
+
+  - name : nixos-gh-issues-nix
+    engine : nixosgh
+    shortcut : nxghpkgi
+    repo : nix
+
+  - name : bitbucket
+    engine : xpath
+    paging : True
+    search_url : https://bitbucket.org/repo/all/{pageno}?name={query}
+    url_xpath : //article[@class="repo-summary"]//a[@class="repo-link"]/@href
+    title_xpath : //article[@class="repo-summary"]//a[@class="repo-link"]
+    content_xpath : //article[@class="repo-summary"]/p
+    categories : it
+    timeout : 4.0
+    disabled : True
+    shortcut : bb 
+
+  - name : gitlab
+    engine : json_engine  
+    paging : True
+    search_url : https://gitlab.com/api/v4/projects?search={query}&page={pageno}
+    url_query : web_url
+    title_query : name_with_namespace
+    content_query : description
+    page_size : 20
+    categories : it
+    shortcut : gl   
+    timeout : 10.0
+    disabled : True
+
+  - name : github
+    engine : github 
+    shortcut : gh
+
+  - name : lobste.rs
+    engine : xpath
+    search_url : https://lobste.rs/search?utf8=%E2%9C%93&q={query}&what=stories&order=relevance
+    results_xpath : //li[contains(@class, "story")]
+    url_xpath : .//span[@class="link"]/a/@href
+    title_xpath : .//span[@class="link"]/a
+    content_xpath : .//a[@class="domain"]
+    categories : it
+    shortcut : lo
+
+  - name : reddit
+    engine : reddit
+    shortcut : re
+    page_size : 25
+    timeout : 10.0
+    disabled : True
+
+  - name : stackoverflow
+    engine : stackoverflow
+    shortcut : st
+
+  - name : searchcode doc
+    engine : searchcode_doc
+    shortcut : scd
+
+  - name : searchcode code
+    engine : searchcode_code
+    shortcut : scc
+    disabled : True
+
+#  - name : yacy
+#    engine : yacy
+#    shortcut : ya
+#    base_url : 'http://localhost:8090'
+#    number_of_results : 5
+#    timeout : 3.0
+
+# Doku engine lets you access to any Doku wiki instance:
+# A public one or a privete/corporate one.
+#  - name : ubuntuwiki
+#    engine : doku
+#    shortcut : uw
+#    base_url : 'http://doc.ubuntu-fr.org'
+
+#  - name : nixoswiki
+#    engine : doku
+#    shortcut : nw
+#    base_url : 'https://nixos.wiki/'
+
+locales:
+    en : English
+    ar : العَرَبِيَّة (Arabic)
+    bg : Български (Bulgarian)
+    ca : Català (Catalan)
+    cs : Čeština (Czech)
+    cy : Cymraeg (Welsh)
+    da : Dansk (Danish)
+    de : Deutsch (German)
+    el_GR : Ελληνικά (Greek_Greece)
+    eo : Esperanto (Esperanto)
+    es : Español (Spanish)
+    eu : Euskara (Basque)
+    fa_IR : (fārsī) فارسى (Persian)
+    fi : Suomi (Finnish)
+    fil : Wikang Filipino (Filipino)
+    fr : Français (French)
+    gl : Galego (Galician)
+    he : עברית (Hebrew)
+    hr : Hrvatski (Croatian)
+    hu : Magyar (Hungarian)
+    ia : Interlingua (Interlingua)
+    it : Italiano (Italian)
+    ja : 日本語 (Japanese)
+    nl : Nederlands (Dutch)
+    nl_BE : Vlaams (Dutch_Belgium)
+    pl : Polski (Polish)
+    pt : Português (Portuguese)
+    pt_BR : Português (Portuguese_Brazil)
+    ro : Română (Romanian)
+    ru : Русский (Russian)
+    sk : Slovenčina (Slovak)
+    sl : Slovenski (Slovene)
+    sr : српски (Serbian)
+    sv : Svenska (Swedish)
+    te : తెలుగు (telugu)
+    tr : Türkçe (Turkish)
+    uk : українська мова (Ukrainian)
+    vi : tiếng việt (Vietnamese)
+    zh : 中文 (Chinese)
+    zh_TW : 國語 (Taiwanese Mandarin)
+
+doi_resolvers :
+  oadoi.org : 'https://oadoi.org/'
+  doi.org : 'https://doi.org/'
+  doai.io  : 'http://doai.io/'
+  sci-hub.tw : 'http://sci-hub.tw/'
+
+default_doi_resolver : 'oadoi.org'

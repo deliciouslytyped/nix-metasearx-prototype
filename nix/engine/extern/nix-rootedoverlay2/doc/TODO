@@ -1,0 +1,22 @@
+Major todo:
+  1) deal with the todos in rooted.nix
+  2) write the rest of the lib tests
+  3) make some usable documentation
+  4) release 1.0 \o/
+
+document and or do something about selectors using colliding packages from the wrong scope (with example)
+
+using the layers approach for the test framework probably doesnt make sense because its already reliant on .extend working (?)
+^no, shouldnt be a problem  - this is what the bootstrap is for?
+
+rename from rooted to something more appropriately descriptive?
+
+consider the enabledebugging infrastructure
+
+conventions:
+  minimize the use of nonoverridable let expressions
+
+document error: attribute 'override' missing, at /bakery2/oven1/personal/projects/nixapps/nix-rootedoverlay/overlay.nix:56:43 as a possible result of not usind stdenv for a base package
+  or at least do something about opaque foot shooting?
+
+document that some lib functions expect certain conventions, such as autoimportAutopackages wanting 4_packages (or redesign this)

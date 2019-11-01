@@ -1,0 +1,5 @@
+{
+  "name" : "nixos-unstable",
+  "url" : "https://github.com/nixos/nixpkgs/",
+  "rev" : "2436c27541b2f52deea3a4c1691216a02152e729"
+}

@@ -1,0 +1,27 @@
+
+priority of results
+
+notes:
+  https://asciimoo.github.io/searx
+  https://github.com/searx
+
+  hound
+    https://github.com/bgreenlee/SublimeHound/blob/master/hound.py
+    https://search.nix.gsc.io/api/v1/search?stats=fosho&repos=NixOS-nixpkgs&rng=1%3A1&q=test&files=&i=nope
+    https://github.com/hound-search/hound/blob/e3b1b43eb872e47af1de1b0e15d0ec3ac5c51dc4/api/api.go
+
+    https://github.com/grahamc/network/tree/master/flexo/hound
+    https://nixos.org/nix-dev/2016-March/019893.html
+    https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/search/hound.nix
+    https://github.com/NixOS/nixpkgs/blob/master/nixos/tests/hound.nix
+    https://github.com/hound-search/hound
+
+  wiki
+    https://nixos.wiki//api.php?action=query&list=search&srsearch=nix&format=json&sroffset=0&srwhat=text
+    nearsearch is weird and im not sure what its supposed to do, its easy to find in the wikimedia source though
+
+todo:
+  broken.sh? https://broken.sh 
+  r13y
+  doc pages
+  options 
