@@ -1,0 +1,56 @@
+language: python
+sudo: false
+cache:
+  - pip
+  - npm
+  - directories:
+    - $HOME/.cache/pip
+
+addons:
+  firefox: "latest"
+
+install:
+  - ./manage.sh install_geckodriver ~/drivers
+  - export PATH=~/drivers:$PATH
+  - ./manage.sh npm_packages
+  - ./manage.sh update_dev_packages
+  - pip install codecov
+script:
+  - ./manage.sh styles
+  - ./manage.sh grunt_build
+  - ./manage.sh tests
+after_success:
+  - ./manage.sh py_test_coverage
+  - codecov
+
+stages:
+  - test
+  - name: docker
+    if: branch = master AND type != pull_request AND env(DOCKER_USERNAME) IS present
+
+jobs:
+  include:
+    - python: "2.7"
+    - python: "3.5"
+    - python: "3.6"
+    - stage: docker
+      python: "3.6"
+      git:
+        depth: false
+      services:
+        - docker
+      addons: []
+      before_install: true
+      install: true
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - ./manage.sh docker_build push
+      after_success: true
+
+notifications:
+  irc:
+    channels:
+      - "irc.freenode.org#searx"
+    template:
+      - "%{repository}/#%{build_number}/%{branch} (%{author}): %{message} %{build_url}"
+    on_success: change
