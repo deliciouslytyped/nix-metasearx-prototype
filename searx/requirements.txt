@@ -1,4 +1,4 @@
-certifi==2019.3.9
+certifi==2022.12.7
 babel==2.7.0
 flask-babel==0.12.2
 flask==1.0.2
